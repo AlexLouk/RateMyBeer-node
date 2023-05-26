@@ -3,8 +3,8 @@ const router = express.Router()
 
 
 // define the home page route
-router.get('/home', (req, res) => {
-    res.send('Birds home page')
+router.get('/', (req, res) => {
+    res.send('<h1>Birds home page</h1>')
   })
   // define the about route
   router.get('/about', (req, res) => {

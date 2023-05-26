@@ -1,12 +1,14 @@
+require("dotenv").config();
+
 module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: 'kandula.db.elephantsql.com',
-      port: '5432',
-      user: 'vkzsbicr',
-      password: 'gaQfUop0YHHJbv6_FmRK_0mDjqWrzNgU',
-      database: 'vkzsbicr'
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PW,
+      database: process.env.DB
     },
 
 
