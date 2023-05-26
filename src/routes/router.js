@@ -10,6 +10,21 @@ router.get('/home', (req, res) => {
   router.get('/about', (req, res) => {
     res.send('About birds')
   })
+  router.get('/FAQs', (req, res) => {
+    res.send('About birds')
+  })
+
+  router.get('/login', (req, res) => {
+    res.send('About birds')
+  })
+
+  router.get('/rating', (req, res) => {
+    res.send('About birds')
+  })
+
+  router.get('/user', (req, res) => {
+    res.send('About birds')
+  })
 
   module.exports = router
 
