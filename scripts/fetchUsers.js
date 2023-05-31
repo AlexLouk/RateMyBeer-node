@@ -10,7 +10,7 @@ const knex = require('knex')({
     useNullAsDefault: true
   });
   
-  knex.select().from('rmb.user')
+  knex.select().from('rmb.about')
     .then(rows => {
       console.log(rows); 
     })

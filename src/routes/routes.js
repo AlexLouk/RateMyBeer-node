@@ -1,32 +1,33 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const aboutRouter = require('./About.js');
 
-
-// define the home page route
+// Home-Seite
 router.get('/', (req, res) => {
-    res.send('<h1>Birds home page</h1>')
-  })
-  // define the about route
-  router.get('/about', (req, res) => {
-    res.send('About birds')
-  })
-  router.get('/FAQs', (req, res) => {
-    res.send('About birds')
-  })
+  res.send('<h1>Birds home page</h1>');
+});
 
-  router.get('/login', (req, res) => {
-    res.send('About birds')
-  })
+// About-Seite
+router.use('/about', aboutRouter);
 
-  router.get('/rating', (req, res) => {
-    res.send('About birds')
-  })
+// FAQs-Seite
+router.get('/FAQs', (req, res) => {
+  res.send('About birds');
+});
 
-  router.get('/user', (req, res) => {
-    res.send('About birds')
-  })
+// Login-Seite
+router.get('/login', (req, res) => {
+  res.send('About birds');
+});
 
-  module.exports = router
+// Rating-Seite
+router.get('/rating', (req, res) => {
+  res.send('About birds');
+});
 
+// User-Seite
+router.get('/user', (req, res) => {
+  res.send('About birds');
+});
 
-
+module.exports = router;
