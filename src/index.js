@@ -1,5 +1,5 @@
 const express = require('express');
-require('dotenv').config({path:'../.env'});
+require('dotenv').config({ path: '../.env' });
 const knex = require("./config/db");
 const app = express();
 const cors = require('cors');
@@ -27,8 +27,10 @@ app.use('/login', loginRouter);
 app.use('/rating', router);
 app.use('/user', userRouter);
 app.use('/update', updateRouter);
-app.use('/about', aboutRouter); 
- 
+app.use('/about', aboutRouter);
+
+const port = process.env.PORT || 3002;
+
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
