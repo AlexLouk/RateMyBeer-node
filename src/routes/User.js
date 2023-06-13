@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const cors = require('cors');
 require('dotenv').config({ path: '../.env' });
 const knex = require("../config/db");
+const AuthMiddleware = require('../middlewares/AuthMiddleware');
 
 router.use(cors());
 router.use(express.json());
@@ -19,9 +21,12 @@ router.get("/getAllUsers", (req, res) => {
 
 //Einen user in der Datenbank anlegen
 router.post('/addUser', (req, res) => {
+    if (!req.body.user_password) return res.status(400).json({error: "Password missing"})
+    const hashed_user_password = crypto.createHash('md5').update(req.body.user_password).digest('hex');
+    
     const newUser = {
         user_email: req.body.user_email,
-        user_password: req.body.user_password,
+        user_password: hashed_user_password,
         user_is_admin: false,
         user_name: req.body.user_name,
     };
@@ -47,21 +52,41 @@ router.post('/addUser', (req, res) => {
         });
 });
 
+
+router.use('/deleteUser/:user_name', AuthMiddleware)
+
 //Einen user aus der Datenbank löschen
 router.delete('/deleteUser/:user_name', (req, res) => {
     const username = req.params.user_name;
   
-    console.log(username);
+    console.log(req.decodedToken);
 
     knex('rmb.user')
-      .where({ user_name: username })
-      .del()
-      .then(() => {
-        res.status(200).json({ message: 'Benutzer erfolgreich gelöscht', user_name: username });
-      })
-      .catch((error) => {
+    .where({user_name: username})
+    .first()
+    .then((result) => {
+        if (!result) return res.status(404).json({error: "User not found"})
+        const hashed_user_password = crypto.createHash('md5').update(req.body.user_password || "").digest('hex');
+        if ((result.user_password == hashed_user_password) || req.decodedToken.user_is_admin) {
+            knex('rmb.user')
+                .where({ user_name: username })
+                .del()
+                .then(() => {
+                    res.status(200).json({ message: 'Benutzer erfolgreich gelöscht', user_name: username });
+                })
+                .catch((error) => {
+                    res.status(500).json({ error: error.message });
+                });
+        } else {
+            return res.status(403).json({error: "Incorrect Password"});
+        }
+    })
+    .catch((error) => {
+        console.error(error);
         res.status(500).json({ error: error.message });
-      });
+    });
+    
+    
   });
 
 module.exports = router;
