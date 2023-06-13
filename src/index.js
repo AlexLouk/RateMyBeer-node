@@ -1,5 +1,5 @@
 const express = require('express');
-require('dotenv').config({path:'../.env'});
+require('dotenv').config({ path: '../.env' });
 const knex = require("./config/db");
 const app = express();
 const cors = require('cors');
@@ -8,6 +8,7 @@ const userRouter = require('./routes/User');
 const updateRouter = require('./routes/Update');
 const loginRouter = require('./routes/Login');
 const aboutRouter = require('./routes/About');
+const gameRouter = require('./routes/Game')
 
 app.use(cors()); // Aktiviere CORS
 
@@ -27,8 +28,9 @@ app.use('/login', loginRouter);
 app.use('/rating', router);
 app.use('/user', userRouter);
 app.use('/update', updateRouter);
-app.use('/about', aboutRouter); 
- 
+app.use('/about', aboutRouter);
+app.use('/game', gameRouter);
+
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
