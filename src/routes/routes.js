@@ -30,4 +30,11 @@ router.get('/user', (req, res) => {
   res.send('About birds');
 });
 
+//Game
+router.get('/game', (req, res) => {
+  res.send('About games');
+});
+
+
+
 module.exports = router;
