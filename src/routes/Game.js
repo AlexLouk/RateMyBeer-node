@@ -1,49 +1,33 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
+const knex = require("../config/db");
 
-const questions = [
-    {
-        id: 1,
-        question: 'Welches Land ist für sein Oktoberfest bekannt?',
-        answers: ['Deutschland', 'Frankreich', 'Italien', 'Spanien'],
-        correctAnswer: 'Deutschland'
-    },
-    {
-        id: 2,
-        question: 'Welche Zutat ist ein Hauptbestandteil von Bier?',
-        answers: ['Hopfen', 'Reis', 'Weintrauben', 'Olivenöl'],
-        correctAnswer: 'Hopfen'
-    }
-];
+router.use(cors());
+router.use(express.json());
 
 // Alle Fragen abrufen
 router.get('/questions', (req, res) => {
-    if (questions.length === 0) {
-        return res.status(404).json({ error: 'Keine weiteren Fragen verfügbar' });
-    }
-
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const randomQuestion = questions[randomIndex];
-
-    // questions.splice(randomIndex, 1); // Entferne die abgerufene Frage aus der Liste
-
-    res.json([randomQuestion]);
+    knex.select().from("rmb.questions").then(rows => {
+        res.json(rows);
+    })
+        .catch((error) => {
+            res.status(500).json({ error: error.message });
+        });
 });
 
 // Frage hinzufügen
 router.post('/questions', (req, res) => {
     const { question, answers, correctAnswer } = req.body;
 
-    const newQuestion = {
-        id: questions.length + 1,
-        question,
-        answers,
-        correctAnswer
-    };
-
-    questions.push(newQuestion);
-
-    res.status(201).json({ message: 'Frage erfolgreich hinzugefügt' });
+    knex('questions')
+        .insert({ question, answers, correctAnswer })
+        .then(() => {
+            res.status(201).json({ message: 'Frage erfolgreich hinzugefügt' });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: error.message });
+        });
 });
 
 module.exports = router;
