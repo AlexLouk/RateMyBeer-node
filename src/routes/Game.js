@@ -8,22 +8,42 @@ router.use(express.json());
 
 // Alle Fragen abrufen
 router.get('/questions', (req, res) => {
-    knex.select().from("rmb.questions").then(rows => {
-        res.json(rows);
-    })
+    knex.select().from("rmb.questions")
+        .then(rows => {
+            res.json(rows);
+        })
         .catch((error) => {
             res.status(500).json({ error: error.message });
         });
 });
 
 // Frage hinzufügen
-router.post('/questions', (req, res) => {
+router.post('/addQuestions', (req, res) => {
     const { question, answers, correctAnswer } = req.body;
 
-    knex('questions')
-        .insert({ question, answers, correctAnswer })
-        .then(() => {
-            res.status(201).json({ message: 'Frage erfolgreich hinzugefügt' });
+    knex('rmb.questions')
+        .max('id')
+        .then((result) => {
+            const maxQuestionId = result[0].max || 0;
+            const nextQuestionId = maxQuestionId + 1;
+
+            const newQuestion = {
+                id: nextQuestionId,
+                question: question,
+                answers: answers,
+                correctAnswer: correctAnswer
+            };
+
+            console.log(newQuestion);
+
+            knex('rmb.questions')
+                .insert(newQuestion)
+                .then(() => {
+                    res.status(201).json({ id: nextQuestionId, message: 'Frage erfolgreich hinzugefügt' });
+                })
+                .catch((error) => {
+                    res.status(500).json({ error: error.message });
+                });
         })
         .catch((error) => {
             res.status(500).json({ error: error.message });
