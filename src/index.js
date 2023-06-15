@@ -4,8 +4,11 @@ const knex = require("./config/db");
 const app = express();
 const cors = require('cors');
 const router = require('./routes/routes.js');
+const newsRouter = require('./routes/News');
 const userRouter = require('./routes/User');
+const ratingRouter = require('./routes/Rating');
 const updateRouter = require('./routes/Update');
+const beersRouter = require('./routes/Beers');
 const loginRouter = require('./routes/Login');
 const aboutRouter = require('./routes/About');
 const gameRouter = require('./routes/Game')
@@ -23,11 +26,12 @@ app.use((req, res, next) => {
 
 app.use('/', router);
 app.use('/FAQs', router);
-app.use('/home', router);
+app.use('/news', newsRouter);
 app.use('/login', loginRouter);
-app.use('/rating', router);
+app.use('/rating', ratingRouter);
 app.use('/user', userRouter);
 app.use('/update', updateRouter);
+app.use('/beers', beersRouter);
 app.use('/about', aboutRouter);
 app.use('/game', gameRouter);
 
