@@ -17,10 +17,11 @@ router.get('/questions', (req, res) => {
 });
 
 // Frage hinzufügen
-router.post('/questions', (req, res) => {
+router.post('/addQuestions', (req, res) => {
     const { question, answers, correctAnswer } = req.body;
 
-    knex('questions')
+
+    knex('rmb.questions')
         .insert({ question, answers, correctAnswer })
         .then(() => {
             res.status(201).json({ message: 'Frage erfolgreich hinzugefügt' });

@@ -4,6 +4,7 @@ const knex = require("./config/db");
 const app = express();
 const cors = require('cors');
 const router = require('./routes/routes.js');
+const faqsRouter = require('./routes/FAQs');
 const newsRouter = require('./routes/News');
 const userRouter = require('./routes/User');
 const ratingRouter = require('./routes/Rating');
@@ -24,8 +25,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use('/', router);
-app.use('/FAQs', router);
+app.use('/faqs', faqsRouter);
 app.use('/news', newsRouter);
 app.use('/login', loginRouter);
 app.use('/rating', ratingRouter);
@@ -33,6 +33,7 @@ app.use('/user', userRouter);
 app.use('/update', updateRouter);
 app.use('/beers', beersRouter);
 app.use('/about', aboutRouter);
+app.use('/', router);
 app.use('/game', gameRouter);
 
 const port = process.env.PORT || 3002;
