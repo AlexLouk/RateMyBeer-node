@@ -150,6 +150,21 @@ router.post("/comment", (req, res) => {
         })
 })
 
+router.get('/search/:search_query', (req, res) => {
+    const searchQuery = req.params.search_query
+
+    knex('rmb.news')
+        .whereRaw("LOWER(news_title) like LOWER(?)", [`%${searchQuery}%`])
+        .orWhereRaw("LOWER(news_text) like LOWER(?)", [`%${searchQuery}%`])
+        .then((result) => {
+            res.send(result)
+        })
+        .catch((error) => {
+            console.error(error)
+            res.status(500).json({ error: error.message })
+        })
+})
+
 router.post("/like", (req, res) => {
     const news_id = req.body.news_id
     const user_id = req.decodedToken.user_id
