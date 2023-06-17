@@ -20,9 +20,12 @@ router.get('/questions', (req, res) => {
 router.post('/addQuestions', (req, res) => {
     const { question, answers, correctAnswer } = req.body;
 
-
-    knex('rmb.questions')
-        .insert({ question, answers, correctAnswer })
+    knex("rmb.questions")
+        .insert({
+            question: question,
+            answers: JSON.stringify(answers),
+            correctAnswer: correctAnswer
+        })
         .then(() => {
             res.status(201).json({ message: 'Frage erfolgreich hinzugefügt' });
         })
@@ -30,5 +33,6 @@ router.post('/addQuestions', (req, res) => {
             res.status(500).json({ error: error.message });
         });
 });
+
 
 module.exports = router;
