@@ -34,7 +34,6 @@ router.get('/:beer_id', (req, res) => {
                             const ratings = ratingsResult.map((rating) => {
                                 const targetUser = rating_users.find(u => u.rating_id_fkey == rating.rating_id)
 
-                                if (!targetUser)
 
                                     return {
                                         ...rating,
