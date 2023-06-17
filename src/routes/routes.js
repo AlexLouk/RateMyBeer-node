@@ -31,9 +31,7 @@ router.get('/user', (req, res) => {
 });
 
 //Game
-router.get('/game', (req, res) => {
-  res.send('About games');
-});
+
 
 
 
