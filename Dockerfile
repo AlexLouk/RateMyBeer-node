@@ -1,26 +1,23 @@
-# Use a base image
-FROM node:19-alpine
+# Verwende ein Node.js-Base-Image mit einer bestimmten Version
+FROM node:19-apline
 
-# Set the working directory
+# Setze das Arbeitsverzeichnis innerhalb des Docker-Images
 WORKDIR /
 
-# Copy package.json and yarn.lock to the container
+# Kopiere die package.json und yarn.lock in das Arbeitsverzeichnis
 COPY package*.json yarn.lock ./
 
-# Install dependencies
+# Installiere die Abhängigkeiten
 RUN yarn install --production
 
-# Copy the rest of the application code to the container
+# Kopiere den gesamten Backend-Code in das Arbeitsverzeichnis
 COPY . .
 
-# Build the React app
-RUN yarn build
+# Setze den Port, den dein Backend verwenden soll (z.B. 3000)
+ENV PORT=3000
 
-# Set the production environment
-ENV NODE_ENV=production
+# Öffne den Port im Container
+EXPOSE $PORT
 
-# Expose the desired port
-EXPOSE 3000
-
-# Start the React app
-CMD ["yarn", "start"]
+# Starte dein Backend
+CMD [ "node", "index.js" ]

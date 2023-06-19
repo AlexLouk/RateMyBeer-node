@@ -23,6 +23,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Build and Push Docker image
-        run: |
-          docker build --file Dockerfile --tag alexlouk/backend:latest .
-          docker push alexlouk/backend:latest
+        run: docker build --file Dockerfile --tag alexlouk/backend:latest .
+      -    
+        name: Push Image to repo
+        run: docker push alexlouk/backend:latest
