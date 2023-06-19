@@ -4,7 +4,6 @@
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "react-scripts build",
     "start": "cd src && node index.js",
     "dev": "cd src && nodemon index.js",
     "test": "react-scripts test --watchAll=false",
