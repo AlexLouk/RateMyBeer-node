@@ -1,5 +1,5 @@
 # Verwende ein Node.js-Base-Image mit einer bestimmten Version
-FROM node:19-apline
+FROM node:19-alpine
 
 # Setze das Arbeitsverzeichnis innerhalb des Docker-Images
 WORKDIR /
