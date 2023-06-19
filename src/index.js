@@ -11,7 +11,6 @@ const ratingRouter = require('./routes/Rating');
 const updateRouter = require('./routes/Update');
 const beersRouter = require('./routes/Beers');
 const loginRouter = require('./routes/Login');
-const aboutRouter = require('./routes/About');
 const gameRouter = require('./routes/Game')
 
 app.use(cors()); // Aktiviere CORS
@@ -32,7 +31,6 @@ app.use('/rating', ratingRouter);
 app.use('/user', userRouter);
 app.use('/update', updateRouter);
 app.use('/beers', beersRouter);
-app.use('/about', aboutRouter);
 app.use('/', router);
 app.use('/game', gameRouter);
 
