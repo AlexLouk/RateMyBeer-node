@@ -5,7 +5,7 @@ FROM node:19-alpine
 WORKDIR /
 
 # Copy package.json and yarn.lock to the container
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 
 # Install dependencies
 RUN yarn install --production
