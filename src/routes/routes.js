@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const aboutRouter = require('./About.js');
 
 // Home-Seite
 router.get('/', (req, res) => {
@@ -8,7 +7,6 @@ router.get('/', (req, res) => {
 });
 
 // About-Seite
-router.use('/about', aboutRouter);
 
 // FAQs-Seite
 router.get('/FAQs', (req, res) => {
