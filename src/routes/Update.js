@@ -14,10 +14,7 @@ router.use(authMiddleware)
 
 router.post('/password', (req, res) => {
     const requestData = {...req.body}
-    console.log(req.decodedToken.user_id, requestData.new)
-
     const newPassword = crypto.createHash('md5').update(requestData.new).digest('hex');
-    
     
     knex('rmb.user')
         .where({user_email: req.decodedToken.user_email})
@@ -48,7 +45,6 @@ router.post('/password', (req, res) => {
 
 router.post('/username', (req, res) => {
     const requestData = {...req.body}
-    console.log(requestData)
 
     knex("rmb.user")
         .where({user_id: req.decodedToken.user_id})

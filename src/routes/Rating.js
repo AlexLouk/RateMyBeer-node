@@ -43,7 +43,6 @@ router.get('/:beer_id', (req, res) => {
                                 }
                             })
 
-                            console.log(ratings)
                             res.send(ratings)
                         })
                 })
@@ -59,14 +58,13 @@ router.get('/:beer_id', (req, res) => {
 router.post("/submit", (req, res) => {
     const ratingData = req.body.rating
     const beer_id = req.body.beer_id
-    const user_id = req.body.user_id
+    const user_id = req.decodedToken.user_id
 
     knex('rmb.rating')
         .orderBy('rating_id', 'desc')
         .first()
         .then(result => {
             const rating_id = result.rating_id + 1
-            console.log(rating_id)
 
             knex('rmb.rating')
                 .insert({ ...ratingData, rating_id })

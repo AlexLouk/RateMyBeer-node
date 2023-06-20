@@ -7,7 +7,9 @@
     "start": "cd src && node index.js",
     "dev": "cd src && nodemon index.js",
     "test": "react-scripts test --watchAll=false",
-    "test:ci": "react-scripts test --coverage --watchAll=false"
+    "test:ci": "react-scripts test --coverage --runInBand --watchAll=false",
+    "test:band": "react-scripts test --watchAll=false --runInBand --forceExit",
+    "test:single": "react-scripts test -t 'AuthRouter' --watchAll=false --runInBand --forceExit"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -24,10 +26,17 @@
     "supertest": "^6.3.3",
     "text-encoding": "^0.7.0"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  },
   "jest": {
     "coverageReporters": [
       "text",
       "lcov"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/config",
+      "index.js"
     ]
   }
 }

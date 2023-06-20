@@ -14,9 +14,9 @@ router.get("/getAllUsers", (req, res) => {
     knex.select().from("rmb.user").then(rows => {
         res.json(rows);
     })
-        .catch((error) => {
-            res.status(500).json({ error: error.message });
-        });
+    .catch((error) => {
+        res.status(500).json({ error: error.message });
+    });
 });
 
 //Einen user in der Datenbank anlegen
@@ -59,8 +59,6 @@ router.use('/deleteUser/:user_name', AuthMiddleware)
 router.delete('/deleteUser/:user_name', (req, res) => {
     const username = req.params.user_name;
 
-    console.log(req.decodedToken)
-
     knex('rmb.user')
         .where({ user_name: username })
         .first()
@@ -68,29 +66,15 @@ router.delete('/deleteUser/:user_name', (req, res) => {
             if (!result) return res.status(404).json({ error: "User not found" })
             const hashed_user_password = crypto.createHash('md5').update(req.body.user_password || "").digest('hex');
             if ((result.user_password == hashed_user_password) || req.decodedToken.user_is_admin) {
-                knex('rmb.user_rating')
-                    .where({ user_id_fkey: result.user_id })
-                    .del()
-                    .catch((error) => {
-                        res.status(500).send({ error: error.message });
-                    })
-
-                knex('rmb.user_beer')
-                    .where({ user_id_fkey: result.user_id })
-                    .del()
-                    .catch((error) => {
-                        res.status(500).send({ error: error.message });
-                    })
-
-                knex('rmb.user')
-                    .where({ user_name: username })
-                    .del()
-                    .then(() => {
-                        res.status(200).json({ message: 'Benutzer erfolgreich gelöscht', user_name: username });
-                    })
-                    .catch((error) => {
-                        res.status(500).json({ error: error.message });
-                    });
+                knex('rmb.user_rating').where({ user_id_fkey: result.user_id }).del()
+                .catch((error) => {res.status(500).send({ error: error.message });})
+                
+                knex('rmb.user_beer').where({ user_id_fkey: result.user_id }).del()
+                .catch((error) => {res.status(500).send({ error: error.message });})
+                
+                knex('rmb.user').where({ user_name: username }).del().then(() => {res.status(200).json({ message: 'Benutzer erfolgreich gelöscht', user_name: username });})
+                .catch((error) => {res.status(500).json({ error: error.message });});
+                
             } else {
                 return res.status(403).json({ error: "Incorrect Password" });
             }

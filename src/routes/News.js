@@ -6,7 +6,6 @@ require('dotenv').config({ path: '../.env' });
 const knex = require("../config/db");
 
 const authMiddleware = require('../middlewares/AuthMiddleware');
-const { error } = require('console');
 const jwtVerify = require('../../scripts/jwtVerify');
 
 router.use(cors());
@@ -58,7 +57,7 @@ router.get("/:news_id/comments", (req, res) => {
                     knex("rmb.user_comment")
                         .join("rmb.user", "rmb.user.user_id", "=", "rmb.user_comment.user_id_fkey")
                         .then(commentsUsers => {
-                            const comments = commentsResult.map((comment) => {
+                        const comments = commentsResult.map((comment) => {
                                 const targetUser = commentsUsers.find(u => u.comment_id_fkey == comment.comment_id)
 
                                 return {
@@ -68,7 +67,6 @@ router.get("/:news_id/comments", (req, res) => {
                                 }
                             })
 
-                            console.log(comments)
                             res.send(comments)
 
                         })
@@ -98,7 +96,7 @@ router.post("/submit", (req, res) => {
             knex('rmb.news')
                 .insert({ ...newsData, news_id: result.news_id + 1, news_likes: "[]" })
                 .then(() => {
-                    res.send()
+                    res.send({ ...newsData, news_id: result.news_id + 1, news_likes: "[]" })
                 })
                 .catch((error) => {
                     res.status(500).send(error)
@@ -127,12 +125,12 @@ router.post("/comment", (req, res) => {
                     comment_id,
                     comment_text,
                 })
-                .then(() => {
-                    knex('rmb.news_comment').insert({ comment_id_fkey: comment_id, news_id_fkey: news_id }).catch(error => {
+                .then(async () => {
+                    await knex('rmb.news_comment').insert({ comment_id_fkey: comment_id, news_id_fkey: news_id }).catch(error => {
                         console.error(error)
                         res.status(500).send(error)
                     })
-                    knex('rmb.user_comment').insert({ comment_id_fkey: comment_id, user_id_fkey: user_id }).catch(error => {
+                    await knex('rmb.user_comment').insert({ comment_id_fkey: comment_id, user_id_fkey: user_id }).catch(error => {
                         console.error(error)
                         res.status(500).send(error)
                     })
@@ -173,7 +171,6 @@ router.post("/like", (req, res) => {
         .where({ news_id })
         .first()
         .then(targetNews => {
-            console.log(targetNews, targetNews.news_likes)
             const currentLikes = JSON.parse(targetNews.news_likes || "[]")
             var newLikes
 

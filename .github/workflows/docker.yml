@@ -22,6 +22,8 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       -
-        name: Build image
-        run: docker build --file Dockerfile --tag alexlouk/ratemybeer-node .
-        
+        name: Build and Push Docker image
+        run: docker build --file Dockerfile --tag alexlouk/backend:latest .
+      -    
+        name: Push Image to repo
+        run: docker push alexlouk/backend:latest

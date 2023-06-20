@@ -11,7 +11,7 @@ module.exports = {
       database: process.env.DB
     },
 
-
+    pool: { min: 0, max: 1 },
     migrations: {
       directory: './migrations'
     },

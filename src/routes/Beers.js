@@ -48,8 +48,6 @@ router.get('/search/:search_query', (req, res) => {
         .whereRaw(`LOWER(beer_name) like LOWER(?)`, [`%${searchQuery}%`])
         .where({ is_approved: true })
         .then((result) => {
-            console.log("search results for ", searchQuery)
-            console.log(result)
             res.send(result)
         })
         .catch((error) => {

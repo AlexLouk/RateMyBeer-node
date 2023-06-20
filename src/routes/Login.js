@@ -27,8 +27,6 @@ router.post('/', (req, res) => {
     if (Object.values(receivedCredentials).includes(undefined))
         return res.status(400).json({ error: "Email and password not received" });
 
-    console.log(receivedCredentials);
-
     knex('rmb.user')
         .where({ user_email: receivedCredentials.user_email })
         .first()

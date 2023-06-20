@@ -27,8 +27,6 @@ router.get('/', (req, res) => {
 router.post('/save', (req, res) => {
     if (!req.decodedToken.user_is_admin) return res.status(403).send()
 
-    console.log("saving faqs:", req.body.faqs)
-
     knex("rmb.faq")
         .truncate()
         .then(() => {
