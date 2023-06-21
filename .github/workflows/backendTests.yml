@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
+      - run: token.json
       - run: yarn test:ci
 
       - name: Tests ✅
